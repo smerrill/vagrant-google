@@ -40,7 +40,8 @@ module VagrantPlugins
           name               = zone_config.name
           machine_type       = zone_config.machine_type
           network            = zone_config.network
-          metadata           = zone_config.metadata 
+          metadata           = zone_config.metadata
+          external_ip        = zone_config.external_ip
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -58,6 +59,7 @@ module VagrantPlugins
               :image_name         => image,
               :network            => network,
               :metadata           => metadata,
+              :external_ip        => external_ip
             }
 
             request_start_time = Time.now().to_i
