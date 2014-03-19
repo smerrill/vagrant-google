@@ -72,6 +72,11 @@ module VagrantPlugins
       #
       # @return [String]
       attr_accessor :external_ip
+      
+      # Tags of machine to launch
+      #
+      # @return [Array]
+      attr_accessor :tags
 
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
@@ -84,6 +89,7 @@ module VagrantPlugins
         @network             = UNSET_VALUE
         @zone                = UNSET_VALUE
         @external_ip         = nil
+        @tags                = nil
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)

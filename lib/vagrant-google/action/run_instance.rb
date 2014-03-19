@@ -42,6 +42,7 @@ module VagrantPlugins
           network            = zone_config.network
           metadata           = zone_config.metadata
           external_ip        = zone_config.external_ip
+          tags               = zone_config.tags
 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
@@ -63,6 +64,12 @@ module VagrantPlugins
             
             if external_ip && external_ip != nil && external_ip != ""
               defaults[:external_ip] = external_ip
+              env[:ui].info(" -- External_ip: #{external_ip}")
+            end
+            
+            if tags && tags != nil && tags != []
+              defaults[:tags] = tags
+              env[:ui].info(" -- Tags: #{tags}")
             end
 
             request_start_time = Time.now().to_i
