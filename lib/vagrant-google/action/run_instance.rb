@@ -59,8 +59,11 @@ module VagrantPlugins
               :image_name         => image,
               :network            => network,
               :metadata           => metadata,
-              :external_ip        => external_ip
             }
+            
+            if external_ip && external_ip != nil && external_ip != ""
+              defaults[:external_ip] = external_ip
+            end
 
             request_start_time = Time.now().to_i
             server = env[:google_compute].servers.create(defaults)

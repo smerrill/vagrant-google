@@ -83,7 +83,7 @@ module VagrantPlugins
         @name                = UNSET_VALUE
         @network             = UNSET_VALUE
         @zone                = UNSET_VALUE
-        @external_ip         = UNSET_VALUE
+        @external_ip         = nil
 
         # Internal state (prefix with __ so they aren't automatically
         # merged)
