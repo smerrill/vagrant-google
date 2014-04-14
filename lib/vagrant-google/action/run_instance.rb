@@ -27,6 +27,18 @@ module VagrantPlugins
           @logger = Log4r::Logger.new("vagrant_google::action::run_instance")
         end
 
+        def create_disk(env, name, size_gb, zone_name, image_name)
+          disk = env[:google_compute].disks.create(
+            name: name,
+            size_gb: size_gb,
+            zone_name: zone_name,
+            source_image: image_name
+          )
+        
+          disk.wait_for { disk.ready? }
+          disk
+        end
+
         def call(env)
           # Initialize metrics if they haven't been
           env[:metrics] ||= {}
@@ -43,7 +55,14 @@ module VagrantPlugins
           metadata           = zone_config.metadata
           external_ip        = zone_config.external_ip
           tags               = zone_config.tags
-
+          if defined? zone_config.autodelete_disk
+            autodelete_disk  = zone_config.autodelete_disk
+          else
+            autodelete_disk    = true
+          end
+          
+          #defined? zone_config.autodelete_disk ? zone_config.autodelete_disk : true
+ 
           # Launch!
           env[:ui].info(I18n.t("vagrant_google.launching_instance"))
           env[:ui].info(" -- Name: #{name}")
@@ -52,12 +71,15 @@ module VagrantPlugins
           env[:ui].info(" -- Zone: #{zone}") if zone
           env[:ui].info(" -- Network: #{network}") if network
           env[:ui].info(" -- Metadata: '#{metadata}'")
+          env[:ui].info(" -- Autodelete '#{autodelete_disk}'")
           begin
+            disks = create_disk(env, name, 10, zone, image)
             defaults = {
               :name               => name,
               :zone_name          => zone,
               :machine_type       => machine_type,
-              :image_name         => image,
+              #:image_name         => image,
+              :disks              => [disks.get_as_boot_disk(true, autodelete_disk)],
               :network            => network,
               :metadata           => metadata,
             }

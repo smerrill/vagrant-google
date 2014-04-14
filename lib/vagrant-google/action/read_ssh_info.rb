@@ -33,7 +33,8 @@ module VagrantPlugins
         def read_ssh_info(google, machine)
           return nil if machine.id.nil?
           # Find the machine
-          zone = machine.provider_config.zone
+          ###zone = machine.provider_config.zone
+          zone = nil
           server = google.servers.get(machine.id, zone)
           if server.nil?
             # The machine can't be found

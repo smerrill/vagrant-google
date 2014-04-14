@@ -34,8 +34,8 @@ module VagrantPlugins
           return :not_created if machine.id.nil?
 
           # Find the machine
-          zone = machine.provider_config.zone
-          # TODO(erjohnso): not sure why this is necessary, 'server' should be nil
+          ###zone = machine.provider_config.zone
+          zone = nil
           begin
             server = google.servers.get(machine.id, zone)
           rescue Exception => e
