@@ -28,15 +28,21 @@ module VagrantPlugins
         end
 
         def create_disk(env, name, size_gb, zone_name, image_name)
-          disk = env[:google_compute].disks.create(
-            name: name,
-            size_gb: size_gb,
-            zone_name: zone_name,
-            source_image: image_name
-          )
-        
-          disk.wait_for { disk.ready? }
-          disk
+          disk = env[:google_compute].disks.get(name)
+          if disk != nil
+            env[:ui].info("Disk #{name} already created. Reusing it.")
+            return disk
+          else
+            disk = env[:google_compute].disks.create(
+              name: name,
+              size_gb: size_gb,
+              zone_name: zone_name,
+              source_image: image_name
+            )
+          
+            disk.wait_for { disk.ready? }
+            return disk
+          end
         end
 
         def call(env)
@@ -58,7 +64,7 @@ module VagrantPlugins
           if defined? zone_config.autodelete_disk
             autodelete_disk  = zone_config.autodelete_disk
           else
-            autodelete_disk    = true
+            autodelete_disk    = false
           end
           
           #defined? zone_config.autodelete_disk ? zone_config.autodelete_disk : true
@@ -74,6 +80,8 @@ module VagrantPlugins
           env[:ui].info(" -- Autodelete '#{autodelete_disk}'")
           begin
             disks = create_disk(env, name, 10, zone, image)
+            #env[:ui].info(" -- Disks: #{disks}")
+            #puts disks.inspect
             defaults = {
               :name               => name,
               :zone_name          => zone,
