@@ -26,7 +26,7 @@ module VagrantPlugins
 
           env[:metrics] ||= {}
           env[:metrics]["provisioner_times"] ||= []
-          env[:metrics]["provisioner_times"] << [name, timer]
+          env[:metrics]["provisioner_times"] << [env[:provisioner_name], timer]
         end
       end
     end
