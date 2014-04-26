@@ -194,7 +194,7 @@ module VagrantPlugins
         # Default to autodeleting the disk.
         @autodelete_disk = true if @autodelete_disk == UNSET_VALUE
 
-        # Default to autodeleting the disk.
+        # Default to 10 GB disks if nothing is specified.
         @disk_size = 10 if @disk_size == UNSET_VALUE
 
         # Compile our zone specific configurations only within
