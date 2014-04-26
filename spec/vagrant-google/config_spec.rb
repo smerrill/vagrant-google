@@ -29,11 +29,10 @@ describe VagrantPlugins::Google::Config do
     end
 
     its("name")              { should == "new" }
-    its("image")             { should == "debian-7-wheezy-v20130617" }
+    its("image")             { should == "debian-7-wheezy-v20130816" }
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
-    its("instance_ready_timeout") { should == 20 }
     its("metadata")          { should == {} }
   end
 
@@ -42,7 +41,7 @@ describe VagrantPlugins::Google::Config do
     # simple boilerplate test, so I cut corners here. It just sets
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
-    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :network,
+    [:name, :image, :zone, :machine_type, :network,
       :metadata].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
