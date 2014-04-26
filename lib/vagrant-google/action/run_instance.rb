@@ -66,6 +66,9 @@ module VagrantPlugins
           else
             autodelete_disk    = false
           end
+          disk_size = 10
+          # @TODO: Validation, better way to handle this?
+          disk_size = zone_config.disk_size if defined? zone_config.disk_size
           
           #defined? zone_config.autodelete_disk ? zone_config.autodelete_disk : true
  
@@ -78,8 +81,9 @@ module VagrantPlugins
           env[:ui].info(" -- Network: #{network}") if network
           env[:ui].info(" -- Metadata: '#{metadata}'")
           env[:ui].info(" -- Autodelete '#{autodelete_disk}'")
+          env[:ui].info(" -- Disk Size in GB '#{disk_size}'")
           begin
-            disks = create_disk(env, name, 10, zone, image)
+            disks = create_disk(env, name, disk_size, zone, image)
             #env[:ui].info(" -- Disks: #{disks}")
             #puts disks.inspect
             defaults = {

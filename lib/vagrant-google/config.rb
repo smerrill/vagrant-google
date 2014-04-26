@@ -78,6 +78,16 @@ module VagrantPlugins
       # @return [Array]
       attr_accessor :tags
 
+      # Should the disk be automatically deleted?
+      #
+      # @return [Boolean]
+      attr_accessor :autodelete_disk
+
+      # Disk size to create (in gigabytes)
+      #
+      # @return [Integer]
+      attr_accessor :disk_size
+
       def initialize(zone_specific=false)
         @google_client_email = UNSET_VALUE
         @google_key_location = UNSET_VALUE
@@ -180,6 +190,12 @@ module VagrantPlugins
 
         # Default zone is us-central1-a.
         @zone = "us-central1-a" if @zone == UNSET_VALUE
+
+        # Default to autodeleting the disk.
+        @autodelete_disk = true if @autodelete_disk == UNSET_VALUE
+
+        # Default to autodeleting the disk.
+        @disk_size = 10 if @disk_size == UNSET_VALUE
 
         # Compile our zone specific configurations only within
         # NON-zone-SPECIFIC configurations.
