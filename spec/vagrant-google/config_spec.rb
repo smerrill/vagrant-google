@@ -33,7 +33,6 @@ describe VagrantPlugins::Google::Config do
     its("zone")              { should == "us-central1-a" }
     its("network")           { should == "default" }
     its("machine_type")      { should == "n1-standard-1" }
-    its("instance_ready_timeout") { should == 20 }
     its("metadata")          { should == {} }
     its("external_ip")       { should == nil }
   end
@@ -43,7 +42,7 @@ describe VagrantPlugins::Google::Config do
     # simple boilerplate test, so I cut corners here. It just sets
     # each of these attributes to "foo" in isolation, and reads the value
     # and asserts the proper result comes back out.
-    [:name, :image, :zone, :instance_ready_timeout, :machine_type, :network,
+    [:name, :image, :zone, :machine_type, :network,
       :metadata, :external_ip].each do |attribute|
 
       it "should not default #{attribute} if overridden" do
